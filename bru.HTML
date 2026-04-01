@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TERMINAL_VICTORY_SEQ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-glow: #00ff41; /* Back to Green for Victory */
+            --bg-color: #050505;
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            background-color: var(--bg-color);
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary-glow);
+            overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        .overlay-fx {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+            background-size: 100% 4px;
+            z-index: 1000; pointer-events: none;
+        }
+
+        /* Main Menu */
+        #main-menu { text-align: center; z-index: 100; }
+        
+        .btn {
+            background: transparent;
+            border: 1px solid var(--primary-glow);
+            color: var(--primary-glow);
+            padding: 20px 60px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: 0.2s;
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+        }
+
+        .btn:hover {
+            background: var(--primary-glow);
+            color: black;
+            box-shadow: 0 0 30px var(--primary-glow);
+        }
+
+        /* Game Interface */
+        #game-interface, #victory-sequence {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 80%;
+            max-width: 900px;
+        }
+
+        .video-box, .image-box {
+            border: 2px solid var(--primary-glow);
+            width: 100%;
+            background: #000;
+            padding: 5px;
+        }
+
+        video, img { width: 100%; display: block; border-radius: 2px; }
+
+        /* Shutdown Screen */
+        #shutdown-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: black;
+            z-index: 9999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #ff003c;
+        }
+
+        .glitch { font-size: 1.2rem; animation: blink 0.1s infinite; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div class="overlay-fx"></div>
+
+    <div id="main-menu">
+        <h1 style="letter-spacing: 15px; margin-bottom: 50px;">LOAD_MISSION</h1>
+        <button class="btn" onclick="initializeSystem()">START MISSION</button>
+    </div>
+
+    <div id="game-interface">
+        <div class="video-box">
+            <video id="missionVideo">
+                <source src="https://raw.githubusercontent.com/trickytiky6-glitch/po/main/evRSqqJH0JdblaTTRJCS%2BGBIIQ0kP15E.mp4" type="video/mp4">
+            </video>
+        </div>
+        <p style="margin-top:15px; font-size: 0.8rem;">> STATUS: TRANSMITTING_DATA...</p>
+    </div>
+
+    <div id="victory-sequence">
+        <div class="image-box">
+            <img src="https://raw.githubusercontent.com/trickytiky6-glitch/sdsdsdsds/main/WhatsApp%20Image%202026-03-30%20at%2016.12.46.jpeg" alt="Victory">
+        </div>
+        <h2 style="margin-top: 20px; text-shadow: 0 0 10px var(--primary-glow);">MISSION COMPLETE</h2>
+        <audio id="clapSound">
+            <source src="https://raw.githubusercontent.com/trickytiky6-glitch/sdsdsdsds/main/clapping-fast_y8B6Nef.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <div id="shutdown-screen">
+        <div class="glitch">CONNECTION LOST</div>
+    </div>
+
+    <script>
+        const video = document.getElementById('missionVideo');
+        const clap = document.getElementById('clapSound');
+        const menu = document.getElementById('main-menu');
+        const ui = document.getElementById('game-interface');
+        const victory = document.getElementById('victory-sequence');
+        const shutdown = document.getElementById('shutdown-screen');
+
+        function initializeSystem() {
+            menu.style.display = 'none';
+            ui.style.display = 'flex';
+            video.play();
+        }
+
+        // Logic for when the video ends
+        video.onended = function() {
+            // 1. Swap Video for Image
+            ui.style.display = 'none';
+            victory.style.display = 'flex';
+
+            // 2. Play Clapping
+            clap.play();
+
+            // 3. 3-Second Timer for the Image and Audio
+            setTimeout(() => {
+                // Stop audio
+                clap.pause();
+                
+                // Show shutdown
+                victory.style.display = 'none';
+                shutdown.style.display = 'flex';
+
+                // Final Close Attempt
+                setTimeout(() => {
+                    window.close();
+                    document.body.innerHTML = `<div style="background:black; color:#ff003c; height:100vh; display:flex; align-items:center; justify-content:center; font-family:monospace; text-align:center;">[ SYSTEM HALTED ]<br>YOU MAY NOW LEAVE</div>`;
+                }, 1000);
+
+            }, 3000); // 3 seconds total
+        };
+    </script>
+
+</body>
+</html>
